@@ -1,6 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.relations import SlugRelatedField
 
 from station.models import (
     Station,
@@ -33,9 +34,32 @@ class CrewSerializer(serializers.ModelSerializer):
 
 
 class TrainSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Train
-        fields = ("id", "name", "cargo", "seats_in_cargo", "capacity")
+        fields = (
+            "id",
+            "name",
+            "cargo",
+            "seats_in_cargo",
+            "train_type",
+            "capacity"
+        )
+
+
+class TrainListSerializer(TrainSerializer):
+    train_type = SlugRelatedField(many=False, read_only=True, slug_field="name")
+
+    class Meta:
+        model = Train
+        fields = (
+             "id",
+            "name",
+            "cargo",
+            "seats_in_cargo",
+            "train_type",
+            "capacity"
+        )
 
 
 class RouteSerializer(serializers.ModelSerializer):
@@ -50,21 +74,17 @@ class RouteSerializer(serializers.ModelSerializer):
 
 
 class RouteListSerializer(RouteSerializer):
-    source = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="name"
-    )
-    destination = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="name"
-    )
+    source = SlugRelatedField(many=False, read_only=True, slug_field="name")
+    destination = SlugRelatedField(many=False, read_only=True, slug_field="name")
 
     class Meta:
         model = Route
-        fields = ("id", "source", "destination")
+        fields = ("id", "source", "destination", "distance")
 
 
 class RouteDetailSerializer(RouteSerializer):
-    source = StationSerializer(many=True, read_only=True)
-    destination = StationSerializer(many=True, read_only=True)
+    source = StationSerializer(many=False, read_only=True,)
+    destination = StationSerializer(many=False, read_only=True)
 
     class Meta:
         model = Route
