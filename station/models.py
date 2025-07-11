@@ -26,7 +26,7 @@ class Route(models.Model):
     distance = models.IntegerField()
 
     def __str__(self):
-        return self.source.name + " " + self.destination.name
+        return self.source.name + "-" + self.destination.name
 
 
 class TrainType(models.Model):
@@ -38,8 +38,8 @@ class TrainType(models.Model):
 
 class Train(models.Model):
     name = models.CharField(max_length=100)
-    cargo_num = models.IntegerField()
-    places_in_cargo = models.IntegerField()
+    cargo = models.IntegerField()
+    seats_in_cargo = models.IntegerField()
     train_type = models.ForeignKey(
         TrainType,
         on_delete=models.CASCADE,
@@ -48,7 +48,7 @@ class Train(models.Model):
 
     @property
     def capacity(self) -> int:
-        return self.cargo_num * self.places_in_cargo
+        return self.cargo * self.seats_in_cargo
 
     def __str__(self):
         return self.name
