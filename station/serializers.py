@@ -111,13 +111,13 @@ class JourneySerializer(serializers.ModelSerializer):
 
 
 class JourneyListSerializer(JourneySerializer):
-    route_from= serializers.CharField(source="rout.source", read_only=True)
-    route_to = serializers.CharField(source="rout.destination", read_only=True)
+    route_from= serializers.CharField(source="route.source", read_only=True)
+    route_to = serializers.CharField(source="route.destination", read_only=True)
     train_name = serializers.CharField(
-        source="tain.name", read_only=True
+        source="train.name", read_only=True
     )
     train_capacity = serializers.IntegerField(
-        source="tain.capacity", read_only=True
+        source="train.capacity", read_only=True
     )
     tickets_available = serializers.IntegerField(read_only=True)
 

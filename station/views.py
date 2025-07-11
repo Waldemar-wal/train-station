@@ -148,7 +148,7 @@ class RouteViewSet(
 class JourneyViewSet(viewsets.ModelViewSet):
     queryset = (
         Journey.objects.all()
-        .select_related("route", "train", "crew")
+        .select_related("route", "train").prefetch_related("crew")
         .annotate(
             tickets_available=(
                 F("train__cargo") * F("train__seats_in_cargo")
