@@ -142,13 +142,14 @@ class RouteViewSet(
         ]
     )
     def list(self, request, *args, **kwargs):
-         return super().list(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
 
 class JourneyViewSet(viewsets.ModelViewSet):
     queryset = (
         Journey.objects.all()
-        .select_related("route", "train").prefetch_related("crew")
+        .select_related("route", "train")
+        .prefetch_related("crew")
         .annotate(
             tickets_available=(
                 F("train__cargo") * F("train__seats_in_cargo")
@@ -195,8 +196,7 @@ class JourneyViewSet(viewsets.ModelViewSet):
                 "date",
                 type=OpenApiTypes.DATE,
                 description=(
-                    "Filter by datetime of Journey "
-                    "(ex. ?date=2022-10-23)"
+                        "Filter by datetime of Journey " "(ex. ?date=2022-10-23)"
                 ),
             ),
         ]
@@ -236,4 +236,3 @@ class OrderViewSet(
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-

@@ -37,14 +37,7 @@ class TrainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Train
-        fields = (
-            "id",
-            "name",
-            "cargo",
-            "seats_in_cargo",
-            "train_type",
-            "capacity"
-        )
+        fields = ("id", "name", "cargo", "seats_in_cargo", "train_type", "capacity")
 
 
 class TrainListSerializer(TrainSerializer):
@@ -52,14 +45,7 @@ class TrainListSerializer(TrainSerializer):
 
     class Meta:
         model = Train
-        fields = (
-             "id",
-            "name",
-            "cargo",
-            "seats_in_cargo",
-            "train_type",
-            "capacity"
-        )
+        fields = ("id", "name", "cargo", "seats_in_cargo", "train_type", "capacity")
 
 
 class RouteSerializer(serializers.ModelSerializer):
@@ -83,7 +69,10 @@ class RouteListSerializer(RouteSerializer):
 
 
 class RouteDetailSerializer(RouteSerializer):
-    source = StationSerializer(many=False, read_only=True,)
+    source = StationSerializer(
+        many=False,
+        read_only=True,
+    )
     destination = StationSerializer(many=False, read_only=True)
 
     class Meta:
@@ -109,16 +98,11 @@ class JourneySerializer(serializers.ModelSerializer):
         )
 
 
-
 class JourneyListSerializer(JourneySerializer):
-    route_from= serializers.CharField(source="route.source", read_only=True)
+    route_from = serializers.CharField(source="route.source", read_only=True)
     route_to = serializers.CharField(source="route.destination", read_only=True)
-    train_name = serializers.CharField(
-        source="train.name", read_only=True
-    )
-    train_capacity = serializers.IntegerField(
-        source="train.capacity", read_only=True
-    )
+    train_name = serializers.CharField(source="train.name", read_only=True)
+    train_capacity = serializers.IntegerField(source="train.capacity", read_only=True)
     tickets_available = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -137,10 +121,8 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
         Ticket.validate_ticket(
-            attrs["cargo"],
-            attrs["seat"],
-            attrs["journey"].train,
-            ValidationError
+            attrs["cargo"], attrs["seat"],
+            attrs["journey"].train, ValidationError
         )
         return data
 
@@ -163,7 +145,9 @@ class JourneyDetailSerializer(JourneySerializer):
     route = RouteListSerializer(many=False, read_only=True)
     train = TrainSerializer(many=False, read_only=True)
     taken_places = TicketSeatsSerializer(
-        source="tickets", many=True, read_only=True
+        source="tickets",
+        many=True,
+        read_only=True
     )
 
     class Meta:
@@ -174,7 +158,7 @@ class JourneyDetailSerializer(JourneySerializer):
             "arrival_time",
             "route",
             "train",
-            "taken_places"
+            "taken_places",
         )
 
 

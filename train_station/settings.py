@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -21,9 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-5)b##ej+7k&twa^_j2r03%3rkyp#v(7k2y@2z$nsb$k5aefa6r"
-)
+SECRET_KEY = "django-insecure-5)b##ej+7k&twa^_j2r03%3rkyp#v(7k2y@2z$nsb$k5aefa6r"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,7 +82,7 @@ WSGI_APPLICATION = "train_station.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-                "NAME": os.environ.get("POSTGRES_DB"),
+        "NAME": os.environ.get("POSTGRES_DB"),
         "USER": os.environ.get("POSTGRES_USER"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
         "HOST": os.environ.get("POSTGRES_HOST"),
@@ -98,19 +97,16 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation."
-                "UserAttributeSimilarityValidator",
+        "UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation."
-                "MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation." "MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation."
-                "CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation." "CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation."
-                "NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation." "NumericPasswordValidator",
     },
 ]
 

@@ -14,14 +14,10 @@ class Station(models.Model):
 
 class Route(models.Model):
     source = models.ForeignKey(
-        Station,
-        related_name="routes_from",
-        on_delete=models.CASCADE
+        Station, related_name="routes_from", on_delete=models.CASCADE
     )
     destination = models.ForeignKey(
-        Station,
-        related_name="routes_to",
-        on_delete=models.CASCADE
+        Station, related_name="routes_to", on_delete=models.CASCADE
     )
     distance = models.IntegerField()
 
@@ -41,9 +37,7 @@ class Train(models.Model):
     cargo = models.IntegerField()
     seats_in_cargo = models.IntegerField()
     train_type = models.ForeignKey(
-        TrainType,
-        on_delete=models.CASCADE,
-        related_name="trains"
+        TrainType, on_delete=models.CASCADE, related_name="trains"
     )
 
     @property
@@ -90,8 +84,13 @@ class Journey(models.Model):
 
     def __str__(self):
         return (
-                str(self.route) + " " + self.train.name + " "
-                + str(self.departure_time) + " " + str(self.arrival_time)
+            str(self.route)
+            + " "
+            + self.train.name
+            + " "
+            + str(self.departure_time)
+            + " "
+            + str(self.arrival_time)
         )
 
 
@@ -112,9 +111,7 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     journey = models.ForeignKey(
-        Journey,
-        on_delete=models.CASCADE,
-        related_name="tickets"
+        Journey, on_delete=models.CASCADE, related_name="tickets"
     )
     order = models.ForeignKey(
         Order,
@@ -135,9 +132,9 @@ class Ticket(models.Model):
                 raise error_to_raise(
                     {
                         ticket_attr_name: f"{ticket_attr_name} "
-                                          f"number must be in available range: "
-                                          f"(1, {train_attr_name}): "
-                                          f"(1, {count_attrs})"
+                        f"number must be in available range: "
+                        f"(1, {train_attr_name}): "
+                        f"(1, {count_attrs})"
                     }
                 )
 
@@ -150,12 +147,12 @@ class Ticket(models.Model):
         )
 
     def save(
-            self,
-            *args,
-            force_insert=False,
-            force_update=False,
-            using=None,
-            update_fields=None,
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
     ):
         self.full_clean()
         return super(Ticket, self).save(
@@ -163,11 +160,8 @@ class Ticket(models.Model):
         )
 
     def __str__(self):
-        return (
-            f"{str(self.journey)} (cargo: {self.cargo}, seat: {self.seat})"
-        )
+        return f"{str(self.journey)} (cargo: {self.cargo}, seat: {self.seat})"
 
     class Meta:
         unique_together = ("journey", "cargo", "seat")
         ordering = ["cargo", "seat"]
-
